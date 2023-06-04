@@ -1,0 +1,53 @@
+#main{
+    display: flex;
+    flex-direction: row;
+}
+.roll-dice{
+    padding:50px;
+}
+[id^=row]{
+    display: flex;
+    flex-direction: row;
+}
+[id^=item]{
+    width:50px;
+    height: 50px;
+    display: inline;
+    background: #bfbf23;
+    border:2px solid black;
+    font-weight: 700;
+}
+[id^=item]:hover{
+    scale: 1.3;
+}
+
+[id=row1]>[id^=item]:nth-child(2n+2){
+    background: white;
+}
+[id=row2]>[id^=item]:nth-child(2n+1){
+    background: white;
+}
+[id=row3]>[id^=item]:nth-child(2n+2){
+    background: white;
+}
+[id=row4]>[id^=item]:nth-child(2n+1){
+    background: white;
+}
+[id=row5]>[id^=item]:nth-child(2n+2){
+    background: white;
+}
+[id=row6]>[id^=item]:nth-child(2n+1){
+    background: white;
+}
+[id=row7]>[id^=item]:nth-child(2n+2){
+    background: white;
+}
+[id=row8]>[id^=item]:nth-child(2n+1){
+    background: white;
+}
+[id=row9]>[id^=item]:nth-child(2n+2){
+    background: white;
+}
+[id=row10]>[id^=item]:nth-child(2n+1){
+    background: white;
+}
