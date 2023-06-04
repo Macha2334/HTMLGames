@@ -1,3 +1,4 @@
+var gameOver=false;
 const makeBoard = () => {
   let el = document.getElementById("board");
   let num;
@@ -23,14 +24,22 @@ const showDiceVal=(diceValEl,randVal)=>{
 }
 const rollDice=(playerNum)=>{
     /*let rollEl=document.getElementById('roll-'+playerNum)
-    rollEl.setAttribute("disabled",true);
+    rollEl.setAttribute("disabled",true);*/
     let anim=document.getElementById('dice-anime');
-    anim.style.display='block'*/
+    anim.style.display='block'
 
     let randVal=Math.round(Math.random()*6);
     while(randVal === 0){
         randVal=Math.round(Math.random()*6);
     }
+
+    pos=sessionStorage.getItem('player'+playerNum) || 0;
+    pos=parseInt(pos)+randVal;
+    sessionStorage.setItem('player'+playerNum,pos)
+    
+    turn=sessionStorage.getItem('player-'+playerNum+'turns') || 0;
+    turn=parseInt(turn)+1;
+    sessionStorage.setItem('player-'+playerNum+'turns',turn)
 
     let diceValEl=document.getElementById("dice-output");
     diceValEl.innerHTML=''
@@ -38,15 +47,35 @@ const rollDice=(playerNum)=>{
        ()=>{
         let val=document.createTextNode(randVal)
         diceValEl.appendChild(val)
-        //anim.style.display="none"
+        anim.style.display="none"
         //rollEl.removeAttribute("disabled")
        }
-    ,1000);
+    ,200);
+    let turnEl=document.getElementsByClassName('player-col-turn');
+    for(let i=0;i<turnEl.length;i++){
+        turnEl[i].innerHTML=sessionStorage.getItem('player-'+(i+1)+'turns')
+    }
+
+    let resEl=document.getElementsByClassName('player-col-res');
+    for(let i=0;i<resEl.length;i++){
+        resEl[i].innerHTML=sessionStorage.getItem('player'+(i+1))
+    }
+    
+    
+    //check if the game is over
+    for(let j=1;j<=sessionStorage.getItem('players');j++){
+        if(sessionStorage.getItem('player'+j) > 100){
+            alert('Game Over!! winner is player '+j);
+            document.getElementById('player-row-'+j).style.background='green'
+            
+        }
+    }
+    store=sessionStorage.
     console.log(randVal)
 }
 const createPlayers = () =>{
     let playersEl=document.getElementById("players");
-    let players=localStorage.getItem('players');
+    let players=sessionStorage.getItem('players');
     try{
         while(playersEl.firstChild){
             playersEl.removeChild(firstChild)
@@ -56,7 +85,7 @@ const createPlayers = () =>{
     }
     let p_row_header_el=document.createElement('tr');
     
-    headers=['Name','Roll your Dice','iteration #'];
+    headers=['Name','Roll your Dice','Location','turn'];
     headers.forEach(element => {
         let p_header_el=document.createElement('th');
         p_header_el.innerText=element;
@@ -70,9 +99,14 @@ const createPlayers = () =>{
         p_row_el.setAttribute("id","player-row-"+i);
 
         let p_col_el1=document.createElement('td');
-        p_col_el1.setAttribute("id","player-col-name");
+        p_col_el1.setAttribute("class","player-col-name");
         let p_col_el2=document.createElement('td');
-        p_col_el2.setAttribute("id","player-col-name");
+        p_col_el2.setAttribute("class","player-col-roll");
+        let p_col_el3=document.createElement('td');
+        p_col_el3.setAttribute("class","player-col-res");
+
+        let p_col_el4=document.createElement('td');
+        p_col_el4.setAttribute("class","player-col-turn");
 
         pname=document.createTextNode('Player '+i);
         p_col_el1.appendChild(pname)
@@ -85,6 +119,8 @@ const createPlayers = () =>{
         //add columns
         p_row_el.appendChild(p_col_el1);
         p_row_el.appendChild(p_col_el2);
+        p_row_el.appendChild(p_col_el3);
+        p_row_el.appendChild(p_col_el4);
         playersEl.appendChild(p_row_el);
     }
     
@@ -95,18 +131,34 @@ const selectNoOfPlayers=()=>{
             totalPlayers=window.prompt('# of players at max is 3, please select accordingly');
     }
     
-    if(localStorage){
-        localStorage.clear;
-        localStorage.setItem('players',totalPlayers)
+    if(sessionStorage){
+        sessionStorage.clear;
+        sessionStorage.setItem('players',totalPlayers)
     }
     createPlayers();
 }
+const play=()=>{
+    while(!gameOver){
+        let turn=1;
+        console.log('turn',turn)
+        for(let j=0;j<=sessionStorage.getItem('players');j++){
+            //disable roll buttons
+            let ele=document.querySelectorAll("[id^='roll-']");
+            for (let i = 1; i <= ele.length; i++) {
+                if(turn !== i)
+                    ele[i].setAttribute('disabled',true);
+            }
+        }
+        
+    }
+}
 const startGame=()=>{
+    document.getElementById('players').style.display='block'
     let ele=document.querySelectorAll("[id^='roll-']");
     console.log('Starting the Game')
-    for (let i = 0; i < ele.length; i++) {
+    for (let i = 0; i <= ele.length; i++) {
         ele[i].addEventListener("click", function() {
-            rollDice(i);
+            rollDice(i+1);
         });
     }
     console.log('addd listners')

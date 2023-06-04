@@ -1,6 +1,7 @@
 #players{
     border-collapse: collapse;
     margin-left:10px;
+    display: none;
 }
 th,td,tr,table{
     border:1px solid black;
