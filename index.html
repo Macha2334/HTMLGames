@@ -8,10 +8,20 @@
     </head>
     <body>
         <h1>Snake Game</h1>
+        <h3><button onclick="selectNoOfPlayers()">Click here select number of players</button></h3>
+        <h3><button onclick="startGame()">start Game</button></h3>
         <div id="main">
-            <div id="board"></div>
-            <div class="roll-dice"><button>Roll Dice</button></div>
+            <div id="board">
+            </div>
+            <table id="players">
+            </table>
+            <div>
+                <iframe id='dice-anime' src="https://giphy.com/embed/kEhxvWwGBqBOHrMFyS" width="100" height="100" 
+                frameBorder="0" class="giphy-embed" allowFullScreen id="dice-anime"></iframe>
+                <div id="dice-output"></div>
+            </div>
+        <script src="./js/main.js"></script>
         </div>
-        <script src="./js/makeBoard.js"></script>
+        
     </body>
 </html>
