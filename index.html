@@ -2,14 +2,19 @@
 <html>
     <head>
         <link rel="stylesheet" href="./styles/board-styles.css"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>Games</title>
         <style>
         </style>
     </head>
     <body>
         <h1>Snake Game</h1>
-        <h3><button onclick="selectNoOfPlayers()">Click here select number of players</button></h3>
-        <h3><button onclick="startGame()">start Game</button></h3>
+        <div id='startBtn'  width="300" height="300"
+        onclick="startGame()">Start Game
+        <svg height="30" width="15">
+            <path d="M0 0 L0 30 L15 15 Z" fill="red"/>
+        </svg>
+        </div>
         <div id="main">
             <div id="board">
             </div>

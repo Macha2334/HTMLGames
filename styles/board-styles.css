@@ -1,3 +1,21 @@
+body{
+    padding:20px;
+}
+#startBtn{
+    background: lightgreen;
+    width:fit-content;
+    padding:20px;
+    border-radius: 10px;
+    margin: 0px 0px 10px 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap:10px;
+    cursor: pointer;
+}
+#startBtn:hover{
+    transform: scale(1.1);
+}
 #players{
     border-collapse: collapse;
     margin-left:10px;
@@ -9,6 +27,12 @@ th,td,tr,table{
 #main{
     display: flex;
     flex-direction: row;
+    gap:10px
+}
+@media screen and (max-width:600px) {
+    #main{
+        flex-direction: column;
+    }
 }
 .roll-dice{
     padding:50px;
@@ -67,4 +91,12 @@ th,td,tr,table{
 }
 [id=row10]>[id^=item]:nth-child(2n+1){
     background: white;
+}
+
+[id^=player-position]{
+    color: red;
+    background: yellow;
+    padding: 2px;
+    border: 1px solid red;
+    border-radius: 50px;
 }
