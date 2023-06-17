@@ -1,4 +1,5 @@
 var gameOver=false;
+let ladders=[{start:'8',moveTo:'28'},{start:'24',moveTo:'58'},{start:'44',moveTo:'62'},{start:'74',moveTo:'96'}]
 const makeBoard = () => {
   let el = document.getElementById("board");
   let num;
@@ -14,23 +15,62 @@ const makeBoard = () => {
       row.appendChild(col);
     }
     el.appendChild(row);
-
-  }
+  }//draw ladders
+  ladders.forEach(
+    (item)=>drawLadder(item.start,item.moveTo)
+  )
 };
+
+const drawLadder = (start,end)=>{
+    //console.log(start,end)
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    let x1,x2,y1,y2;
+
+    x1= start % 10 === 0 ? 540 : ((start % 10)*54);
+    y1=540-((start / 10)*54);
+    
+    //console.log(x1,y1)
+    x2= end % 10 === 0 ? 540 : ((end % 10)*54);
+    y2=540-((end/10)*54);
+    ctx.strokeStyle ="red"
+    //console.log(x2,y2)
+    ctx.moveTo(x1-35, y1);
+    ctx.lineTo(x2-35, y2);
+    ctx.stroke();
+    ctx.moveTo(x1 - 15 , y1);
+    ctx.lineTo(x2 - 15, y2);
+    
+    ctx.stroke();
+}
+
 const updateTheBoard = (playerNum) => {
-    //let el = document.getElementById("board");
-    let num;
-    //let playerScore=Object.keys(sessionStorage).filter((item)=>item.includes('playerScore'));
     let playerScore=sessionStorage.getItem('playerScore'+playerNum);
-    //for(j=0;j<playerScore.length;j++){
-        //console.log("item"+playerScore[j+1])
+    console.log(playerScore)
+    
+    //-check for ladder
+    //console.log(playerScore)
+    //console.log(ladders)
+
+    let ladderLuck=ladders.find(
+        (item,indx)=>item.start == playerScore
+    );
+    let oldValue=playerScore;
+    if(ladderLuck){
+        playerScore=ladderLuck.moveTo;
+        console.log('insid',ladderLuck)
+        console.log('insid',playerScore)
+        sessionStorage.setItem('playerScore'+playerNum,playerScore);
+        let resEl=document.getElementsByClassName('player-col-res');
+        resEl[playerNum-1].innerHTML=playerScore;
+    }
     //remvoe the element if it's there
     let oldEl=document.getElementById('player-position'+playerNum);
     if(oldEl){
         oldEl.remove();
     }
-    let el=document.getElementById("item"+playerScore);
 
+    let el=document.getElementById("item"+playerScore);
     if(el){
         //el.classList.add('activeGrid');
         let playerPosEl=document.createElement("span");
@@ -39,22 +79,7 @@ const updateTheBoard = (playerNum) => {
         playerPosEl.textContent=playerNum;
         el.appendChild(playerPosEl)
     }
-    //}
-    //console.log(Players);
-    /*for (let i = 10; i >= 1; i--) {
-      let row = document.createElement("div");
-      row.setAttribute("id", "row" + i);
-      for (j = 10; j >= 1; j--) {
-        num = 10 * (i - 1) + j;
-        let col = document.createElement("span");
-        col.setAttribute("id", "item" + j);
-        let textN = document.createTextNode(num);
-        col.appendChild(textN);
-        row.appendChild(col);
-      }
-      el.appendChild(row);
-  
-    }*/
+   
   };
 
 const showDiceVal=(diceValEl,randVal)=>{
@@ -135,7 +160,7 @@ const createPlayers = () =>{
     playersEl.appendChild(p_row_header_el)
     
     for(let i=1;i<=players;i++){
-        console.log('inside for')
+        //console.log('inside for')
         let p_row_el=document.createElement('tr');
         p_row_el.setAttribute("id","player-row-"+i);
 
@@ -153,7 +178,8 @@ const createPlayers = () =>{
         p_col_el1.appendChild(pname)
 
         let roll_btn=document.createElement('button');
-        roll_btn.innerHTML='Roll Dice'
+        roll_btn.innerHTML='Roll Dice';
+        roll_btn.classList.add('diceBtn');
         roll_btn.setAttribute("id",'roll-'+i)
         p_col_el2.appendChild(roll_btn);
         
@@ -184,7 +210,7 @@ const selectNoOfPlayers=()=>{
 const play=()=>{
     while(!gameOver){
         let turn=1;
-        console.log('turn',turn)
+        //console.log('turn',turn)
         for(let j=0;j<=sessionStorage.getItem('players');j++){
             //disable roll buttons
             let ele=document.querySelectorAll("[id^='roll-']");
@@ -202,7 +228,7 @@ const startGame=()=>{
 
     document.getElementById('players').style.display='block'
     let ele=document.querySelectorAll("[id^='roll-']");
-    console.log('Starting the Game')
+    //console.log('Starting the Game')
     //scroll to board
     document.getElementById('board').scrollIntoView();
 
@@ -211,6 +237,6 @@ const startGame=()=>{
             rollDice(i+1);
         });
     }
-    console.log('addd listners')
+    //console.log('addd listners')
 }
 makeBoard();

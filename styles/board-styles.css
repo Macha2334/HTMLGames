@@ -100,3 +100,9 @@ th,td,tr,table{
     border: 1px solid red;
     border-radius: 50px;
 }
+.diceBtn{
+    margin:5px;
+    padding:10px;
+    border-radius: 10px;
+    background-color: white;
+}
